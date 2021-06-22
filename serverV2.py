@@ -1,29 +1,29 @@
 import socket
 
-if __name__ == '__main__':
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print('Жду подключения...')
-    sock.bind(('8.8.8.8', 80))
-    sock.listen(1)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    conn, addr = socket.accept()
+server.bind(('192.168.1.6', 8888))
 
-    try:
-        print('Соединение установлено', addr)
-        while True:
-            client_mes = conn.recv(1024).decode()
+server.listen(1)    # разрешение на 1 соединение
+print('listening...')
 
-            if not client_mes:
-                break
+while True:
+    client_socket, addr = server.accept()
+    print(f'[client info]: {client_socket}')
 
-            print('Клиент:', client_mes)
+    client_socket.send("connect".encode('utf-8'))
 
-            if client_mes == "exit":
-                break
+    data = client_socket.recv(2048)
 
-            conn.send(input('Сервер:')).encode()
-            print()
-    except Exception as err:
-        print('error: ', err)
-    finally:
-        sock.close()
+    print('[client]:', data.decode('utf-8'))
+
+    message = input('>')
+
+    if message == 'stop':
+        client_socket.send('socket close'.encode('utf-8'))
+        break
+
+    else:
+        client_socket.send(message.encode('utf-8'))
+
+server.close()

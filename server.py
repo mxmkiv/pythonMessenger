@@ -1,19 +1,19 @@
 import socket
 
 
-def get_ip_address():
+"""def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
+    return s.getsockname()[0]"""
 
 
 if __name__ == "__main__":
 
     sock = socket.socket()
 
-    print("IP: {}. Жду подключения...".format(get_ip_address()))
+    print("IP: {}. Жду подключения...")
     sock.bind(("", 9090))
-    sock.listen(1)
+    sock.listen(2)
 
     conn, addr = sock.accept()
 
