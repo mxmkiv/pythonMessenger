@@ -1,38 +1,49 @@
+import pickle
 import socket
+import threading
 
 
-"""def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]"""
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+server.bind(('192.168.1.6', 8888))
+
+server.listen(1)    # разрешение на 1 соединение
+print('listening...')
+
+users = []
 
 
-if __name__ == "__main__":
+def send_all(data):
+    for user in users:
+        user.send(data)
 
-    sock = socket.socket()
 
-    print("IP: {}. Жду подключения...")
-    sock.bind(("", 9090))
-    sock.listen(2)
+def listen_user(user):
+    print('listening user')
 
-    conn, addr = sock.accept()
+    while True:
+        data = user.recv(2048)
+        #   print(f'[client]: {data}')
 
-    try:
-        print("Соединение установлено:", addr)
-        while True:
-            # отправка сообщений
-            # со стороны клиента
-            client_mes = conn.recv(1024).decode()
-            if not client_mes:
-                break
+        print(pickle.loads(data)[0], ':', pickle.loads(data)[1])
 
-            print("Клиент:", client_mes)
-            if client_mes == "Выход":
-                break
+        #   print('[client]:', data.decode('utf-8'))
+        send_all(data)
 
-            conn.send(input("Сервер: ").encode())
-        print("Соединение закрыто.")
-    except Exception as err:
-        print("Ошибка: ", err)
-    finally:
-        conn.close()
+
+def start_server():
+    while True:
+        user_socket, addr = server.accept()
+        print(f'[info]: {addr[0]} connect')
+
+        users.append(user_socket)
+        listen_accept_user = threading.Thread(
+            target=listen_user,
+            args=(user_socket,)
+        )
+
+        listen_accept_user.start()
+
+
+if __name__ == '__main__':
+    start_server()
