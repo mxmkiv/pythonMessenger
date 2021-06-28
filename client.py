@@ -1,4 +1,6 @@
 import socket
+import pymysql
+import config
 from threading import Thread
 import pickle
 
@@ -6,7 +8,19 @@ import pickle
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 client.connect(('192.168.1.6', 8888))
+
 username = input('name>')
+
+
+'''answer = input('sign in or sign up')
+if answer == 'sign in':
+    username = input('username>')
+    password = input('password>')
+    
+elif answer == 'sign up':
+    name = input('name>')
+    username = input('username>')
+    password = input('password>')'''
 
 
 def listen_server():

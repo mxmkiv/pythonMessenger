@@ -1,7 +1,22 @@
 import pickle
 import socket
 import threading
+import pymysql
+from config import *
 
+try:
+    connection = pymysql.connect(
+        host=host,
+        port=3306,
+        user=db_user,
+        password=password,
+        database=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    print('db connect')
+except Exception as ex:
+    print('Error db connect...')
+    print(ex)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
