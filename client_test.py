@@ -7,17 +7,23 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 client.connect(('192.168.1.6', 8888))
 
-username = input('name>')
+'''answer = input('/r to register, /l to login>')
 
-'''answer = input('sign in or sign up')
-if answer == 'sign in':
-    username = input('username>')
+if answer == '/r':
+    login = input('login(username)>')
     password = input('password>')
-    
-elif answer == 'sign up':
-    name = input('name>')
-    username = input('username>')
+
+    client.send(pickle.dumps(['db.r', login, password]))
+
+elif answer == '/l':
+    login = input('login>')
+
+    client.send(pickle.dumps(['db', login]))
+
     password = input('password>')'''
+
+
+username = input('name>')
 
 
 def listen_server():
@@ -28,7 +34,6 @@ def listen_server():
             continue
         else:
             print(pickle.loads(data)[0], ':', pickle.loads(data)[1])
-        #   (data.decode('utf-8'))
 
 
 def send_server():

@@ -40,6 +40,28 @@ def listen_user(user):
         data = user.recv(2048)
         #   print(f'[client]: {data}')
 
+        '''if pickle.loads(data)[0] == 'db.r':
+            with connection:
+                cursor = connection.cursor()
+
+                decode_data = pickle.loads(data)
+
+                print(decode_data)
+                login = "'" + decode_data[1] + "'"
+                account_password = "'" + decode_data[2] + "'"
+
+                query = 'INSERT INTO test VALUES ({},{})'.format(login, account_password)
+
+                print(query)
+
+                cursor.execute(query)
+
+        if pickle.loads(data)[0] == 'db.r' or 'db.l':   # для индификации сообщенийдля БД
+
+            continue
+
+        else:'''
+
         print(pickle.loads(data)[0], ':', pickle.loads(data)[1])
 
         #   print('[client]:', data.decode('utf-8'))
