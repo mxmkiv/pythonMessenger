@@ -38,34 +38,26 @@ def listen_user(user):
 
     while True:
         data = user.recv(2048)
-        #   print(f'[client]: {data}')
 
-        '''if pickle.loads(data)[0] == 'db.r':
-            with connection:
-                cursor = connection.cursor()
+        if pickle.loads(data)[0] == 'db.r':
 
-                decode_data = pickle.loads(data)
+            login = "'" + pickle.loads(data)[1] + "'"
 
-                print(decode_data)
-                login = "'" + decode_data[1] + "'"
-                account_password = "'" + decode_data[2] + "'"
+            account_password = "'" + pickle.loads(data)[2] + "'"
 
+            with connection.cursor() as cursor:
                 query = 'INSERT INTO test VALUES ({},{})'.format(login, account_password)
-
-                print(query)
-
                 cursor.execute(query)
+                connection.commit()
 
-        if pickle.loads(data)[0] == 'db.r' or 'db.l':   # для индификации сообщенийдля БД
+                print('user successful registration')
+                #   user_socket.send(pickle.dumps('successful registration'))
 
-            continue
+        else:
 
-        else:'''
+            print(pickle.loads(data)[0], ':', pickle.loads(data)[1])
 
-        print(pickle.loads(data)[0], ':', pickle.loads(data)[1])
-
-        #   print('[client]:', data.decode('utf-8'))
-        send_all(data)
+            send_all(data)
 
 
 def start_server():

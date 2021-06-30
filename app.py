@@ -1,5 +1,14 @@
 import kivy
 
+'''
+
+
+//////////////test file
+    хотел сделать интерфейс, но решил делать уже на c++
+
+
+'''
+
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
